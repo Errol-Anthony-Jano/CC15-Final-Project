@@ -1,0 +1,486 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>960</width>
+    <height>540</height>
+   </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>960</width>
+    <height>540</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>16777215</width>
+    <height>16777215</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">background: #ffffff;</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QHBoxLayout" name="horizontalLayout_4" stretch="1,4">
+    <property name="spacing">
+     <number>24</number>
+    </property>
+    <item>
+     <widget class="QGroupBox" name="sidebar_container">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>16777215</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background: #eaf3ff;
+border: 0;</string>
+      </property>
+      <property name="title">
+       <string/>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_2" stretch="0,0,1">
+       <item alignment="Qt::AlignHCenter">
+        <widget class="QLabel" name="bank_logo">
+         <property name="styleSheet">
+          <string notr="true">border: 0;
+</string>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="pixmap">
+          <pixmap>../icons/account_balance_92dp_004AAD_FILL0_wght400_GRAD0_opsz48.svg</pixmap>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer name="verticalSpacer">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <layout class="QVBoxLayout" name="btn_vertical_layout">
+         <property name="spacing">
+          <number>18</number>
+         </property>
+         <item>
+          <widget class="QPushButton" name="btn_dashboard">
+           <property name="styleSheet">
+            <string notr="true">text-align: left;
+background: #004aad;
+color: rgb(255, 255, 255);
+border-radius: 4px;</string>
+           </property>
+           <property name="text">
+            <string>Dashboard</string>
+           </property>
+           <property name="icon">
+            <iconset>
+             <normaloff>../icons/home_24dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.svg</normaloff>../icons/home_24dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.svg</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>32</width>
+             <height>32</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="btn_account_card">
+           <property name="layoutDirection">
+            <enum>Qt::LeftToRight</enum>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">text-align: left;
+border-radius: 4px;
+color: #004aad;</string>
+           </property>
+           <property name="text">
+            <string>Account and Card</string>
+           </property>
+           <property name="icon">
+            <iconset>
+             <normaloff>../icons/credit_card_24dp_004AAD_FILL0_wght400_GRAD0_opsz24.svg</normaloff>../icons/credit_card_24dp_004AAD_FILL0_wght400_GRAD0_opsz24.svg</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>32</width>
+             <height>32</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="btn_withdraw">
+           <property name="layoutDirection">
+            <enum>Qt::LeftToRight</enum>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">text-align: left;
+border-radius: 4px;
+color: #004aad;</string>
+           </property>
+           <property name="text">
+            <string>Withdraw Money</string>
+           </property>
+           <property name="icon">
+            <iconset>
+             <normaloff>../icons/money_24dp_004AAD_FILL0_wght400_GRAD0_opsz24.svg</normaloff>../icons/money_24dp_004AAD_FILL0_wght400_GRAD0_opsz24.svg</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>32</width>
+             <height>32</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="btn_deposit">
+           <property name="layoutDirection">
+            <enum>Qt::LeftToRight</enum>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">text-align: left;
+color: #004aad;
+border-radius: 4px;</string>
+           </property>
+           <property name="text">
+            <string>Deposit Money</string>
+           </property>
+           <property name="icon">
+            <iconset>
+             <normaloff>../icons/payments_24dp_004AAD_FILL0_wght400_GRAD0_opsz24.svg</normaloff>../icons/payments_24dp_004AAD_FILL0_wght400_GRAD0_opsz24.svg</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>32</width>
+             <height>32</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="btn_transfer">
+           <property name="layoutDirection">
+            <enum>Qt::LeftToRight</enum>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">text-align: left;
+border-radius: 4px;
+color: #004aad;</string>
+           </property>
+           <property name="text">
+            <string>Transfer Money</string>
+           </property>
+           <property name="icon">
+            <iconset>
+             <normaloff>../icons/send_24dp_004AAD_FILL0_wght400_GRAD0_opsz24.svg</normaloff>../icons/send_24dp_004AAD_FILL0_wght400_GRAD0_opsz24.svg</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>32</width>
+             <height>32</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="btn_history">
+           <property name="layoutDirection">
+            <enum>Qt::LeftToRight</enum>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">text-align: left;
+border-radius: 4px;
+color: #004aad;</string>
+           </property>
+           <property name="text">
+            <string>Transaction History</string>
+           </property>
+           <property name="icon">
+            <iconset>
+             <normaloff>../icons/history_24dp_004AAD_FILL0_wght400_GRAD0_opsz24.svg</normaloff>../icons/history_24dp_004AAD_FILL0_wght400_GRAD0_opsz24.svg</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>32</width>
+             <height>32</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="spacer">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>40</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="QPushButton" name="btn_change_password">
+           <property name="layoutDirection">
+            <enum>Qt::LeftToRight</enum>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">text-align: left;
+color: #004aad;
+border-radius: 4px;</string>
+           </property>
+           <property name="text">
+            <string>Change Password</string>
+           </property>
+           <property name="icon">
+            <iconset>
+             <normaloff>../icons/lock_24dp_004AAD_FILL0_wght400_GRAD0_opsz24.svg</normaloff>../icons/lock_24dp_004AAD_FILL0_wght400_GRAD0_opsz24.svg</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>32</width>
+             <height>32</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="btn_logout">
+           <property name="layoutDirection">
+            <enum>Qt::LeftToRight</enum>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">text-align: left;
+color: #004aad;
+border-radius: 4px;</string>
+           </property>
+           <property name="text">
+            <string>Log Out</string>
+           </property>
+           <property name="icon">
+            <iconset>
+             <normaloff>../icons/logout_24dp_004AAD_FILL0_wght400_GRAD0_opsz24.svg</normaloff>../icons/logout_24dp_004AAD_FILL0_wght400_GRAD0_opsz24.svg</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>32</width>
+             <height>32</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item>
+     <layout class="QVBoxLayout" name="insights_container">
+      <property name="spacing">
+       <number>32</number>
+      </property>
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <item>
+       <layout class="QHBoxLayout" name="basic_stats_container" stretch="1,1">
+        <property name="spacing">
+         <number>32</number>
+        </property>
+        <item>
+         <widget class="QGroupBox" name="bal_container">
+          <property name="styleSheet">
+           <string notr="true">border: 0;</string>
+          </property>
+          <property name="title">
+           <string/>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout" stretch="0,1">
+           <item>
+            <widget class="QLabel" name="available_bal">
+             <property name="font">
+              <font>
+               <pointsize>16</pointsize>
+               <bold>true</bold>
+              </font>
+             </property>
+             <property name="text">
+              <string>AVAILABLE BALANCE</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout">
+             <item alignment="Qt::AlignHCenter">
+              <widget class="QLabel" name="bal_label">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="font">
+                <font>
+                 <pointsize>32</pointsize>
+                 <bold>true</bold>
+                </font>
+               </property>
+               <property name="styleSheet">
+                <string notr="true"/>
+               </property>
+               <property name="text">
+                <string>12700.84</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <widget class="QGroupBox" name="tbl_container">
+          <property name="styleSheet">
+           <string notr="true">border: 0;</string>
+          </property>
+          <property name="title">
+           <string/>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_4" stretch="0,1">
+           <item>
+            <widget class="QLabel" name="recent_transactions">
+             <property name="font">
+              <font>
+               <pointsize>16</pointsize>
+               <bold>true</bold>
+              </font>
+             </property>
+             <property name="text">
+              <string>RECENT TRANSACTIONS</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QTableWidget" name="tbl_recent_transactions">
+             <property name="styleSheet">
+              <string notr="true">background: #daf0f7;</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <widget class="QGroupBox" name="cash_flows_container">
+        <property name="styleSheet">
+         <string notr="true">border: 0;</string>
+        </property>
+        <property name="title">
+         <string/>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout_5" stretch="0,1">
+         <item>
+          <widget class="QLabel" name="cash_flows">
+           <property name="font">
+            <font>
+             <pointsize>16</pointsize>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="text">
+            <string>CASH FLOWS</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="graphs_container">
+           <property name="spacing">
+            <number>32</number>
+           </property>
+           <item>
+            <widget class="QWidget" name="income_graph" native="true">
+             <property name="minimumSize">
+              <size>
+               <width>120</width>
+               <height>80</height>
+              </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">background: #daf0f7;</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QWidget" name="expense_graph" native="true">
+             <property name="minimumSize">
+              <size>
+               <width>120</width>
+               <height>80</height>
+              </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">background: #daf0f7;</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </widget>
+      </item>
+     </layout>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>960</width>
+     <height>22</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
