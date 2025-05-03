@@ -9,7 +9,7 @@ class MainWindow(QMainWindow):
         self.setCentralWidget(self.stack)
 
         self.login = uic.loadUi(r"resources\ui-files\login.ui")
-        self.signup = uic.loadUi(r"resources\ui-files\sign-up.ui")
+        self.signup = uic.loadUi(r"resources\ui-files\signup-resized.ui")
         self.dashboard = uic.loadUi(r"resources\ui-files\bank-dashboard.ui")
 
         self.stack.addWidget(self.login)
@@ -19,6 +19,7 @@ class MainWindow(QMainWindow):
         self.login.btn_login.clicked.connect(self.showDashboard)
         self.dashboard.btn_logout.clicked.connect(self.showLogin)
         self.login.register_button.clicked.connect(self.showRegistration)
+        self.signup.pushButton.clicked.connect(self.showLogin)
 
     
     def showDashboard(self):
