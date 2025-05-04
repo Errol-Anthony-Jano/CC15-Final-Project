@@ -292,7 +292,7 @@ color: rgb(0, 0, 0);</string>
                  </widget>
                 </item>
                 <item>
-                 <widget class="QPushButton" name="register_button">
+                 <widget class="QPushButton" name="btn_register">
                   <property name="font">
                    <font>
                     <underline>true</underline>
