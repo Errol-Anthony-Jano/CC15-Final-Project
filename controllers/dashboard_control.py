@@ -1,7 +1,7 @@
 class DashboardAppControl:
     def __init__(self, main_window):
         self.main_window = main_window
-
+        self.session = main_window.session
         self.main_window.dashboard.navbar.btn_dashboard.clicked.connect(self.showDashboard)
         self.main_window.dashboard.navbar.btn_withdraw.clicked.connect(self.showWithdraw)
         self.main_window.dashboard.navbar.btn_deposit.clicked.connect(self.showDeposit)
