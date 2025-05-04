@@ -5,16 +5,16 @@ from views.dashboard_view import DashboardUI
 from controllers.login_control import LoginAppControl
 from controllers.dashboard_control import DashboardAppControl
 from controllers.register_control import RegisterAppControl
+from models.user_session import UserSession
+import sys, sqlite3, hashlib
 
-
-
-import sys
 
 class MainWindow(QMainWindow):
     def __init__(self):
-        super().__init__()
+        super(MainWindow, self).__init__()
         self.setWindowTitle("CC15 Banking System")
         self.setStyleSheet("background: #ffffff")
+        self.session = UserSession()
 
         # initialize qstackedwidget for switching between login/register and main menu
         self.central_widget = QStackedWidget()
@@ -30,14 +30,15 @@ class MainWindow(QMainWindow):
         self.central_widget.addWidget(self.registerPanel) # index 1 
         self.central_widget.addWidget(self.dashboard) # index 2
 
-app = QApplication(sys.argv)
-
-window = MainWindow()
-
-login_control = LoginAppControl(window)
-dashboard_control = DashboardAppControl(window)
-register_control = RegisterAppControl(window)
 
 
-window.show()
-app.exec()
+if __name__ == "__main__":
+    app = QApplication(sys.argv)
+    window = MainWindow()
+
+    login_control = LoginAppControl(window)
+    dashboard_control = DashboardAppControl(window)
+    register_control = RegisterAppControl(window)
+
+    window.show()
+    app.exec()
