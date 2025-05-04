@@ -30,10 +30,10 @@ class DashboardUI(QMainWindow):
         self.layout.setStretch(1, 4)
 
         #Add elements to stack
-        self.dashboard = uic.loadUi(r"resources\ui-files\bank-dashboard.ui")
-        self.transferPanel = uic.loadUi(r"resources\ui-files\transfer-panel.ui")
-        self.depositPanel = uic.loadUi(r"resources\ui-files\deposit-panel.ui")
-        self.withdrawPanel = uic.loadUi(r"resources\ui-files\withdraw-panel.ui")
+        self.dashboard = uic.loadUi(r"resources\ui-files\bank_dashboard.ui")
+        self.transferPanel = uic.loadUi(r"resources\ui-files\transfer_panel.ui")
+        self.depositPanel = uic.loadUi(r"resources\ui-files\deposit_panel.ui")
+        self.withdrawPanel = uic.loadUi(r"resources\ui-files\withdraw_panel.ui")
 
         self.stack.addWidget(self.dashboard)
         self.stack.addWidget(self.transferPanel)
