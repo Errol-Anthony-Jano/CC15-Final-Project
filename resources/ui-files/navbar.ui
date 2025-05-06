@@ -13,6 +13,11 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">QPushButton:checked {
+border-left: 4px solid #004aad;
+}</string>
+  </property>
   <layout class="QHBoxLayout" name="horizontalLayout">
    <item>
     <widget class="QGroupBox" name="sidebar_container">
@@ -71,17 +76,22 @@ border: 0;</string>
         <item>
          <widget class="QPushButton" name="btn_dashboard">
           <property name="styleSheet">
-           <string notr="true">text-align: left;
-background: #004aad;
-color: rgb(255, 255, 255);
-border-radius: 4px;</string>
+           <string notr="true">QPushButton {
+background: #eaf3ff;
+color: #004aad;
+text-align: left;
+}
+
+QPushButton:hover {
+border-left: 4px solid #004aad;
+}</string>
           </property>
           <property name="text">
            <string>Dashboard</string>
           </property>
           <property name="icon">
            <iconset>
-            <normaloff>../icons/home_24dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.svg</normaloff>../icons/home_24dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.svg</iconset>
+            <normaloff>../icons/home_24dp_004AAD_FILL0_wght400_GRAD0_opsz24.svg</normaloff>../icons/home_24dp_004AAD_FILL0_wght400_GRAD0_opsz24.svg</iconset>
           </property>
           <property name="iconSize">
            <size>
@@ -89,17 +99,26 @@ border-radius: 4px;</string>
             <height>32</height>
            </size>
           </property>
+          <attribute name="buttonGroup">
+           <string notr="true">buttonGroup</string>
+          </attribute>
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="btn_account_card">
+         <widget class="QPushButton" name="btn_account">
           <property name="layoutDirection">
            <enum>Qt::LeftToRight</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">text-align: left;
-border-radius: 4px;
-color: #004aad;</string>
+           <string notr="true">QPushButton {
+background: #eaf3ff;
+color: #004aad;
+text-align: left;
+}
+
+QPushButton:hover {
+border-left: 4px solid #004aad;
+}</string>
           </property>
           <property name="text">
            <string>Account and Card</string>
@@ -114,6 +133,9 @@ color: #004aad;</string>
             <height>32</height>
            </size>
           </property>
+          <attribute name="buttonGroup">
+           <string notr="true">buttonGroup</string>
+          </attribute>
          </widget>
         </item>
         <item>
@@ -122,9 +144,15 @@ color: #004aad;</string>
            <enum>Qt::LeftToRight</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">text-align: left;
-border-radius: 4px;
-color: #004aad;</string>
+           <string notr="true">QPushButton {
+background: #eaf3ff;
+color: #004aad;
+text-align: left;
+}
+
+QPushButton:hover {
+border-left: 4px solid #004aad;
+}</string>
           </property>
           <property name="text">
            <string>Withdraw Money</string>
@@ -139,6 +167,9 @@ color: #004aad;</string>
             <height>32</height>
            </size>
           </property>
+          <attribute name="buttonGroup">
+           <string notr="true">buttonGroup</string>
+          </attribute>
          </widget>
         </item>
         <item>
@@ -147,9 +178,15 @@ color: #004aad;</string>
            <enum>Qt::LeftToRight</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">text-align: left;
+           <string notr="true">QPushButton {
+background: #eaf3ff;
 color: #004aad;
-border-radius: 4px;</string>
+text-align: left;
+}
+
+QPushButton:hover {
+border-left: 4px solid #004aad;
+}</string>
           </property>
           <property name="text">
            <string>Deposit Money</string>
@@ -164,6 +201,9 @@ border-radius: 4px;</string>
             <height>32</height>
            </size>
           </property>
+          <attribute name="buttonGroup">
+           <string notr="true">buttonGroup</string>
+          </attribute>
          </widget>
         </item>
         <item>
@@ -172,9 +212,15 @@ border-radius: 4px;</string>
            <enum>Qt::LeftToRight</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">text-align: left;
-border-radius: 4px;
-color: #004aad;</string>
+           <string notr="true">QPushButton {
+background: #eaf3ff;
+color: #004aad;
+text-align: left;
+}
+
+QPushButton:hover {
+border-left: 4px solid #004aad;
+}</string>
           </property>
           <property name="text">
            <string>Transfer Money</string>
@@ -189,6 +235,9 @@ color: #004aad;</string>
             <height>32</height>
            </size>
           </property>
+          <attribute name="buttonGroup">
+           <string notr="true">buttonGroup</string>
+          </attribute>
          </widget>
         </item>
         <item>
@@ -197,9 +246,15 @@ color: #004aad;</string>
            <enum>Qt::LeftToRight</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">text-align: left;
-border-radius: 4px;
-color: #004aad;</string>
+           <string notr="true">QPushButton {
+background: #eaf3ff;
+color: #004aad;
+text-align: left;
+}
+
+QPushButton:hover {
+border-left: 4px solid #004aad;
+}</string>
           </property>
           <property name="text">
            <string>Transaction History</string>
@@ -214,6 +269,9 @@ color: #004aad;</string>
             <height>32</height>
            </size>
           </property>
+          <attribute name="buttonGroup">
+           <string notr="true">buttonGroup</string>
+          </attribute>
          </widget>
         </item>
         <item>
@@ -230,39 +288,20 @@ color: #004aad;</string>
          </spacer>
         </item>
         <item>
-         <widget class="QPushButton" name="btn_change_password">
-          <property name="layoutDirection">
-           <enum>Qt::LeftToRight</enum>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">text-align: left;
-color: #004aad;
-border-radius: 4px;</string>
-          </property>
-          <property name="text">
-           <string>Change Password</string>
-          </property>
-          <property name="icon">
-           <iconset>
-            <normaloff>../icons/lock_24dp_004AAD_FILL0_wght400_GRAD0_opsz24.svg</normaloff>../icons/lock_24dp_004AAD_FILL0_wght400_GRAD0_opsz24.svg</iconset>
-          </property>
-          <property name="iconSize">
-           <size>
-            <width>32</width>
-            <height>32</height>
-           </size>
-          </property>
-         </widget>
-        </item>
-        <item>
          <widget class="QPushButton" name="btn_logout">
           <property name="layoutDirection">
            <enum>Qt::LeftToRight</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">text-align: left;
+           <string notr="true">QPushButton {
+background: #eaf3ff;
 color: #004aad;
-border-radius: 4px;</string>
+text-align: left;
+}
+
+QPushButton:hover {
+border-left: 4px solid #004aad;
+}</string>
           </property>
           <property name="text">
            <string>Log Out</string>
@@ -277,6 +316,9 @@ border-radius: 4px;</string>
             <height>32</height>
            </size>
           </property>
+          <attribute name="buttonGroup">
+           <string notr="true">buttonGroup</string>
+          </attribute>
          </widget>
         </item>
        </layout>
@@ -288,4 +330,7 @@ border-radius: 4px;</string>
  </widget>
  <resources/>
  <connections/>
+ <buttongroups>
+  <buttongroup name="buttonGroup"/>
+ </buttongroups>
 </ui>
