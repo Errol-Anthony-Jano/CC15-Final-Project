@@ -34,11 +34,15 @@ class DashboardUI(QMainWindow):
         self.transferPanel = uic.loadUi(r"resources\ui-files\transfer_panel.ui")
         self.depositPanel = uic.loadUi(r"resources\ui-files\deposit_panel.ui")
         self.withdrawPanel = uic.loadUi(r"resources\ui-files\withdraw_panel.ui")
+        self.transactionHistoryPanel = uic.loadUi(r"resources\ui-files\transaction_history.ui")
+        self.accountPanel = uic.loadUi(r"resources\ui-files\account_information.ui")
 
         self.stack.addWidget(self.dashboard)
         self.stack.addWidget(self.transferPanel)
         self.stack.addWidget(self.depositPanel)
         self.stack.addWidget(self.withdrawPanel)
+        self.stack.addWidget(self.transactionHistoryPanel)
+        self.stack.addWidget(self.accountPanel)
 
         #Set central widget
         self.central_widget.setLayout(self.layout)
