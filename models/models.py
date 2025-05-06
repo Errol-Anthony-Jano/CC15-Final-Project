@@ -63,4 +63,3 @@ class UserModel:
         self.db.sql.execute("SELECT * FROM users WHERE username = ? AND password = ?", (username, password))
         results = self.db.sql.fetchall()
         return len(results) > 0
-
