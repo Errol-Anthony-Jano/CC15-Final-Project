@@ -91,7 +91,7 @@ border-radius: 8px;</string>
            <property name="title">
             <string/>
            </property>
-           <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,1,1,1,1,0,0,0,0">
+           <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,1,1,1,0,1,0,0,0,0">
             <item alignment="Qt::AlignHCenter|Qt::AlignVCenter">
              <widget class="QLabel" name="label">
               <property name="maximumSize">
@@ -124,9 +124,10 @@ border-radius: 8px;</string>
              </spacer>
             </item>
             <item>
-             <widget class="QLineEdit" name="lineEdit">
+             <widget class="QLineEdit" name="first_name">
               <property name="styleSheet">
-               <string notr="true">background: white;</string>
+               <string notr="true">border: 1px solid #004aad;
+background: #daf0f7;</string>
               </property>
               <property name="placeholderText">
                <string>First Name</string>
@@ -134,9 +135,10 @@ border-radius: 8px;</string>
              </widget>
             </item>
             <item>
-             <widget class="QLineEdit" name="lineEdit_2">
+             <widget class="QLineEdit" name="last_name">
               <property name="styleSheet">
-               <string notr="true">background: white;</string>
+               <string notr="true">border: 1px solid #004aad;
+background: #daf0f7;</string>
               </property>
               <property name="placeholderText">
                <string>Last Name</string>
@@ -144,19 +146,37 @@ border-radius: 8px;</string>
              </widget>
             </item>
             <item>
-             <widget class="QLineEdit" name="lineEdit_3">
+             <widget class="QLineEdit" name="user_name">
               <property name="styleSheet">
-               <string notr="true">background: white;</string>
+               <string notr="true">border: 1px solid #004aad;
+background: #daf0f7;</string>
               </property>
               <property name="placeholderText">
-               <string>Email</string>
+               <string>Username</string>
               </property>
              </widget>
             </item>
             <item>
-             <widget class="QLineEdit" name="lineEdit_4">
+             <spacer name="verticalSpacer_6">
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>20</width>
+                <height>40</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="password_field">
               <property name="styleSheet">
-               <string notr="true">background: white;</string>
+               <string notr="true">border: 1px solid #004aad;
+background: #daf0f7;</string>
+              </property>
+              <property name="echoMode">
+               <enum>QLineEdit::Password</enum>
               </property>
               <property name="placeholderText">
                <string>Password</string>
@@ -164,9 +184,13 @@ border-radius: 8px;</string>
              </widget>
             </item>
             <item>
-             <widget class="QLineEdit" name="lineEdit_5">
+             <widget class="QLineEdit" name="confirm_password_field">
               <property name="styleSheet">
-               <string notr="true">background: white;</string>
+               <string notr="true">border: 1px solid #004aad;
+background: #daf0f7;</string>
+              </property>
+              <property name="echoMode">
+               <enum>QLineEdit::Password</enum>
               </property>
               <property name="placeholderText">
                <string>Confirm Password</string>
@@ -195,9 +219,15 @@ border-radius: 8px;</string>
                </size>
               </property>
               <property name="styleSheet">
-               <string notr="true">background: #004aad;
+               <string notr="true">QPushButton{
+background: #004aad;
 color: #ffffff;
-border-radius: 4px;</string>
+border-radius: 4px;
+}
+
+QPushButton:hover{
+background: #69a9ff;
+}</string>
               </property>
               <property name="text">
                <string>Sign up</string>
