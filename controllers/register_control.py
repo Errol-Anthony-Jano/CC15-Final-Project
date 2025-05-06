@@ -13,16 +13,16 @@ class RegisterAppControl:
     
 
     def register(self):
-        first_name = self.main_window.registerPanel.lineEdit
-        last_name = self.main_window.registerPanel.lineEdit_2
-        email = self.main_window.registerPanel.lineEdit_3
-        password = self.main_window.registerPanel.lineEdit_4
-        confirm = self.main_window.registerPanel.lineEdit_5
+        first_name = self.main_window.registerPanel.first_name
+        last_name = self.main_window.registerPanel.last_name
+        user_name = self.main_window.registerPanel.user_name
+        password = self.main_window.registerPanel.password_field
+        confirm = self.main_window.registerPanel.confirm_password_field
 
         user_data = {
             'first_name': first_name.text(),
             'last_name': last_name.text(),
-            'username': email.text().strip(),
+            'username': user_name.text().strip(),
             'password': password.text()
         }
 
@@ -31,7 +31,7 @@ class RegisterAppControl:
                 QMessageBox.warning(self.main_window, "Registration Failed", f"{key.title()} must not be empty!")
                 return
 
-        if(self.user.isUsernameExists(email.text())):
+        if(self.user.isUsernameExists(user_name.text())):
             QMessageBox.warning(self.main_window, "Registration Failed", "Username/Email already exists!")
             return
 
@@ -40,11 +40,12 @@ class RegisterAppControl:
             return
         
         self.user.register(user_data)
+        QMessageBox.information(self.main_window, "Registration Successful", "You have registered successfully.\nPlease login to start using the app.")
         self.showLogin()
 
         first_name.clear()
         last_name.clear()
-        email.clear()
+        user_name.clear()
         password.clear()
         confirm.clear()
 
