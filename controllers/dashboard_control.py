@@ -7,6 +7,8 @@ class DashboardAppControl:
         self.main_window.dashboard.navbar.btn_deposit.clicked.connect(self.showDeposit)
         self.main_window.dashboard.navbar.btn_transfer.clicked.connect(self.showTransfer)
         self.main_window.dashboard.navbar.btn_logout.clicked.connect(self.showLogin)
+        self.main_window.dashboard.navbar.btn_history.clicked.connect(self.showTransactionHistory)
+        self.main_window.dashboard.navbar.btn_account.clicked.connect(self.showAccount)
 
 
     # index:
@@ -14,6 +16,8 @@ class DashboardAppControl:
     # 1 - transfer
     # 2 - deposit
     # 3 - withdraw
+    # 4 - transaction history
+    # 5 - show account menu
 
     def showDashboard(self):
         self.main_window.dashboard.stack.setCurrentIndex(0)
@@ -29,3 +33,9 @@ class DashboardAppControl:
 
     def showLogin(self):
         self.main_window.central_widget.setCurrentIndex(0)
+
+    def showTransactionHistory(self):
+        self.main_window.dashboard.stack.setCurrentIndex(4)
+
+    def showAccount(self):
+        self.main_window.dashboard.stack.setCurrentIndex(5)
