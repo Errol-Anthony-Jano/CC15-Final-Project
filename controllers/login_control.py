@@ -7,7 +7,7 @@ class LoginAppControl:
         self.session = window.session
         self.main_window.loginPanel.btn_login.clicked.connect(self.login)
         self.main_window.loginPanel.btn_register.clicked.connect(self.showRegister)
-        self.user = UserModel()
+        self.user = self.main_window.user_model
 
 
     def showDashboard(self):
@@ -32,12 +32,31 @@ class LoginAppControl:
         isVerified = self.user.verify_login(username, password)
 
         if(isVerified):
-            self.session.user_id = self.user.get_user_data(username)[0][0]
-            self.session.username = username
+            
+            user_data = self.user.get_user_data(username)
+            
+
+            self.session.set_user_id(user_data[0][0])
+            self.session.set_account_number(user_data[0][1])
+            self.session.set_first_name(user_data[0][2])
+            self.session.set_last_name(user_data[0][3])
+            self.session.set_username(username)
+            self.session.set_password(user_data[0][5]) # modify later
+            
+            balance = self.user.get_balance(self.session.get_user_id())
+            self.session.set_balance(balance)
+
+            self.main_window.dashboard.dashboard.set_balance_display(balance)
+            self.main_window.dashboard.accountPanel.set_display_information(user_data[0][1], user_data[0][2], user_data[0][3], username)
+            self.main_window.dashboard.dashboard.set_acc_number_display(self.session.get_account_number())
+
             self.showDashboard()
             user_box.clear()
             pass_box.clear()
 
         else:
             QMessageBox.warning(self.main_window, "Login Failed", "Incorrect username or password.")
+    
+    
+        
 
