@@ -1,0 +1,22 @@
+from PyQt6.QtWidgets import QWidget
+from resources.ui_files.withdraw import Ui_Form
+
+class UI_Withdraw(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.ui = Ui_Form()
+        self.ui.setupUi(self)
+
+    def clear_fields(self):
+        self.ui.amount_box.clear()
+
+    def display_balance(self, balance):
+        if balance < 10:
+            self.ui.balance_label.setText(f"0.0{balance}")
+            return
+        elif balance >= 10 and balance < 100:
+            self.ui.balance_label.setText(f"0.{balance}")
+            return
+
+        str_balance = str(balance)[:-2] + '.' + str(balance)[-2:]
+        self.ui.balance_label.setText(str_balance)
