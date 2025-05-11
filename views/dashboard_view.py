@@ -1,7 +1,13 @@
 from PyQt6 import uic
 from PyQt6.QtWidgets import QWidget, QMainWindow, QStackedWidget, QHBoxLayout, QSizePolicy
+from views.UI_Dashboard import UI_Dashboard
+from views.UI_Transfer import UI_Transfer
+from views.UI_Deposit import UI_Deposit
+from views.UI_Withdraw import UI_Withdraw
+from views.UI_TransactionHistory import UI_TransactionHistory
+from views.UI_AccountMenu import UI_AccountMenu
 
-class DashboardUI(QMainWindow):
+class DashboardUI(QWidget):
     def __init__(self):
         # Initialize window, window name, and layout to be used.
         super().__init__()
@@ -9,17 +15,14 @@ class DashboardUI(QMainWindow):
         self.setStyleSheet("background: #ffffff")
 
         #Initialize HBoxLayout
-        self.layout = QHBoxLayout()
-
-        #Initialize central widget
-        self.central_widget = QWidget()
+        self.layout = QHBoxLayout(self)
 
         #Initialize StackedWidget
         self.stack = QStackedWidget()
         self.stack.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Expanding)
 
         #Initialize NavBar 
-        self.navbar = uic.loadUi(r"resources\ui-files\navbar.ui")
+        self.navbar = uic.loadUi(r"resources\ui_files\navbar.ui")
         self.navbar.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Expanding)
 
         #Add elements to layout
@@ -30,12 +33,13 @@ class DashboardUI(QMainWindow):
         self.layout.setStretch(1, 4)
 
         #Add elements to stack
-        self.dashboard = uic.loadUi(r"resources\ui-files\bank_dashboard.ui")
-        self.transferPanel = uic.loadUi(r"resources\ui-files\transfer_panel.ui")
-        self.depositPanel = uic.loadUi(r"resources\ui-files\deposit_panel.ui")
-        self.withdrawPanel = uic.loadUi(r"resources\ui-files\withdraw_panel.ui")
-        self.transactionHistoryPanel = uic.loadUi(r"resources\ui-files\transaction_history.ui")
-        self.accountPanel = uic.loadUi(r"resources\ui-files\account_information.ui")
+        self.dashboard = UI_Dashboard()
+        self.transferPanel = UI_Transfer()
+        self.depositPanel = UI_Deposit()
+        self.withdrawPanel = UI_Withdraw()
+        self.transactionHistoryPanel = UI_TransactionHistory()
+
+        self.accountPanel = UI_AccountMenu()
 
         self.stack.addWidget(self.dashboard)
         self.stack.addWidget(self.transferPanel)
@@ -44,6 +48,4 @@ class DashboardUI(QMainWindow):
         self.stack.addWidget(self.transactionHistoryPanel)
         self.stack.addWidget(self.accountPanel)
 
-        #Set central widget
-        self.central_widget.setLayout(self.layout)
-        self.setCentralWidget(self.central_widget)
+        # Set displayed balance on screen
