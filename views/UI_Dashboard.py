@@ -1,4 +1,4 @@
-from PyQt6.QtWidgets import QWidget, QMainWindow, QStackedWidget, QHBoxLayout, QSizePolicy
+from PyQt6.QtWidgets import QWidget, QMainWindow, QStackedWidget, QHBoxLayout, QSizePolicy, QHeaderView, QTableWidgetItem
 from resources.ui_files.dashboard import Ui_Form
 
 class UI_Dashboard(QWidget):
@@ -21,3 +21,19 @@ class UI_Dashboard(QWidget):
 
     def set_acc_number_display(self, account_number):
         self.ui.acct_num_label.setText(account_number)
+
+    def setup_table(self):
+        header = self.ui.tbl_recent_transactions.horizontalHeader()
+        header.setSectionResizeMode(QHeaderView.ResizeMode.Stretch)
+        self.ui.tbl_recent_transactions.setHorizontalHeaderLabels(["Initiated by", "Receiver", "Type", "Amount", "Date", "Time"])
+
+    def populate_table(self, result_set):
+        self.ui.tbl_recent_transactions.setRowCount(5)
+        self.ui.tbl_recent_transactions.setColumnCount(6)
+
+        for row_idx, row_data in (enumerate(result_set)):
+            for col_idx, value in (enumerate(row_data)):
+                item = QTableWidgetItem(str(value))
+                self.ui.tbl_recent_transactions.setItem(row_idx, col_idx, item)
+
+

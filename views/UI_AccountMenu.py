@@ -12,3 +12,14 @@ class UI_AccountMenu(QWidget):
         self.ui.dsp_first_name.setText(first_name)
         self.ui.dsp_last_name.setText(last_name)
         self.ui.dsp_username.setText(username)
+
+        self.ui.first_name_box.setPlaceholderText(first_name)
+        self.ui.last_name_box.setPlaceholderText(last_name)
+        self.ui.username_box.setPlaceholderText(username)
+    
+    def clear_fields(self):
+        self.ui.first_name_box.clear()
+        self.ui.last_name_box.clear()
+        self.ui.username_box.clear()
+        self.ui.password_box.clear()
+        self.ui.confirm_password_box.clear()
