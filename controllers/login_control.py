@@ -12,6 +12,7 @@ class LoginAppControl:
 
     def showDashboard(self):
         self.main_window.central_widget.setCurrentIndex(2)
+        self.main_window.dashboard.stack.setCurrentIndex(0)
 
 
     def showRegister(self):
@@ -22,18 +23,18 @@ class LoginAppControl:
         user_box = self.main_window.loginPanel.lineEdit
         pass_box = self.main_window.loginPanel.lineEdit_2
 
-        username = user_box.text()
+        username = user_box.text().strip()
         password = pass_box.text()
         
         if(username == "" or password == ""):
             QMessageBox.warning(self.main_window, "Login Failed", "Fields must not be empty!.")
             return
 
-        isVerified = self.user.verify_login(username, password)
+        isVerified = self.user.account_actions.verify_login(username, password)
 
         if(isVerified):
             
-            user_data = self.user.get_user_data(username)
+            user_data = self.user.account_actions.get_user_data(username)
             
 
             self.session.set_user_id(user_data[0][0])
@@ -43,13 +44,16 @@ class LoginAppControl:
             self.session.set_username(username)
             self.session.set_password(user_data[0][5]) # modify later
             
-            balance = self.user.get_balance(self.session.get_user_id())
+            balance = self.user.balance_actions.get_balance(self.session.get_user_id())
             self.session.set_balance(balance)
 
             self.main_window.dashboard.dashboard.set_balance_display(balance)
             self.main_window.dashboard.accountPanel.set_display_information(user_data[0][1], user_data[0][2], user_data[0][3], username)
             self.main_window.dashboard.dashboard.set_acc_number_display(self.session.get_account_number())
-
+            self.main_window.dashboard.dashboard.setup_table()
+            
+            result_set = self.user.transaction_actions.load_recent_transactions(self.session.get_user_id(), self.session.get_account_number())
+            self.main_window.dashboard.dashboard.populate_table(result_set)
             self.showDashboard()
             user_box.clear()
             pass_box.clear()

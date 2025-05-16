@@ -20,8 +20,8 @@ class RegisterAppControl:
         confirm = self.main_window.registerPanel.confirm_password_field
 
         user_data = {
-            'first_name': first_name.text(),
-            'last_name': last_name.text(),
+            'first_name': first_name.text().title(),
+            'last_name': last_name.text().title(),
             'username': user_name.text().strip(),
             'password': password.text()
         }
@@ -31,7 +31,7 @@ class RegisterAppControl:
                 QMessageBox.warning(self.main_window, "Registration Failed", f"{key.title()} must not be empty!")
                 return
 
-        if(self.user.isUsernameExists(user_name.text())):
+        if(self.user.account_actions.isUsernameExists(user_name.text())):
             QMessageBox.warning(self.main_window, "Registration Failed", "Username/Email already exists!")
             return
 
@@ -39,7 +39,7 @@ class RegisterAppControl:
             QMessageBox.warning(self.main_window, "Registration Failed", "Password and Confirm Password must match!")
             return
         
-        self.user.register(user_data)
+        self.user.account_actions.register(user_data)
         QMessageBox.information(self.main_window, "Registration Successful", "You have registered successfully.\nPlease login to start using the app.")
         self.showLogin()
 
