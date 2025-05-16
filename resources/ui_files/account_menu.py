@@ -172,6 +172,7 @@ class Ui_Form(object):
         self.password_box = QtWidgets.QLineEdit(parent=self.groupBox_3)
         self.password_box.setEnabled(True)
         self.password_box.setStyleSheet("border: 1px solid #004aad;")
+        self.password_box.setEchoMode(QtWidgets.QLineEdit.EchoMode.Password)
         self.password_box.setObjectName("password_box")
         self.verticalLayout_13.addWidget(self.password_box)
         self.verticalLayout_9.addLayout(self.verticalLayout_13)
@@ -182,8 +183,9 @@ class Ui_Form(object):
         self.label_12.setObjectName("label_12")
         self.verticalLayout_14.addWidget(self.label_12)
         self.confirm_password_box = QtWidgets.QLineEdit(parent=self.groupBox_3)
-        self.confirm_password_box.setEnabled(False)
+        self.confirm_password_box.setEnabled(True)
         self.confirm_password_box.setStyleSheet("border: 1px solid #004aad;")
+        self.confirm_password_box.setEchoMode(QtWidgets.QLineEdit.EchoMode.Password)
         self.confirm_password_box.setObjectName("confirm_password_box")
         self.verticalLayout_14.addWidget(self.confirm_password_box)
         self.verticalLayout_9.addLayout(self.verticalLayout_14)
@@ -208,9 +210,9 @@ class Ui_Form(object):
 "}")
         self.btn_cancel.setObjectName("btn_cancel")
         self.horizontalLayout_2.addWidget(self.btn_cancel, 0, QtCore.Qt.AlignmentFlag.AlignHCenter)
-        self.pushButton_3 = QtWidgets.QPushButton(parent=Form)
-        self.pushButton_3.setMinimumSize(QtCore.QSize(80, 25))
-        self.pushButton_3.setStyleSheet("QPushButton{\n"
+        self.btn_save = QtWidgets.QPushButton(parent=Form)
+        self.btn_save.setMinimumSize(QtCore.QSize(80, 25))
+        self.btn_save.setStyleSheet("QPushButton{\n"
 "background: #004aad;\n"
 "border-radius: 4px;\n"
 "color: #ffffff;\n"
@@ -220,8 +222,8 @@ class Ui_Form(object):
 "background: #69a9ff;\n"
 "border-radius: 4px;\n"
 "}")
-        self.pushButton_3.setObjectName("pushButton_3")
-        self.horizontalLayout_2.addWidget(self.pushButton_3, 0, QtCore.Qt.AlignmentFlag.AlignHCenter)
+        self.btn_save.setObjectName("btn_save")
+        self.horizontalLayout_2.addWidget(self.btn_save, 0, QtCore.Qt.AlignmentFlag.AlignHCenter)
         self.verticalLayout_15.addLayout(self.horizontalLayout_2)
 
         self.retranslateUi(Form)
@@ -243,7 +245,7 @@ class Ui_Form(object):
         self.label_11.setText(_translate("Form", "Password"))
         self.label_12.setText(_translate("Form", "Confirm Password"))
         self.btn_cancel.setText(_translate("Form", "Cancel"))
-        self.pushButton_3.setText(_translate("Form", "Save Changes"))
+        self.btn_save.setText(_translate("Form", "Save Changes"))
 
 
 if __name__ == "__main__":

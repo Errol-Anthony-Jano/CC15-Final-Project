@@ -317,6 +317,9 @@ border: 0;</string>
               <property name="styleSheet">
                <string notr="true">border: 1px solid #004aad;</string>
               </property>
+              <property name="echoMode">
+               <enum>QLineEdit::Normal</enum>
+              </property>
              </widget>
             </item>
            </layout>
@@ -336,10 +339,13 @@ border: 0;</string>
             <item>
              <widget class="QLineEdit" name="confirm_password_box">
               <property name="enabled">
-               <bool>false</bool>
+               <bool>true</bool>
               </property>
               <property name="styleSheet">
                <string notr="true">border: 1px solid #004aad;</string>
+              </property>
+              <property name="echoMode">
+               <enum>QLineEdit::Normal</enum>
               </property>
              </widget>
             </item>
@@ -393,7 +399,7 @@ border-radius: 4px;
       </widget>
      </item>
      <item alignment="Qt::AlignHCenter">
-      <widget class="QPushButton" name="pushButton_3">
+      <widget class="QPushButton" name="btn_save">
        <property name="minimumSize">
         <size>
          <width>80</width>
