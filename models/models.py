@@ -1,5 +1,4 @@
 import sqlite3, hashlib, secrets, random
-from decimal import *
 
 class Database:
     def __init__(self):
@@ -31,45 +30,89 @@ class Database:
 
             "CREATE TABLE IF NOT EXISTS transaction_history(" +
                 "transaction_id INTEGER PRIMARY KEY AUTOINCREMENT, " + 
-                "user_id INTEGER, " +
-                "transaction_type_id INTEGER, " +
-                "transaction_amount DECIMAL(15,2), " +
-                "transaction_date DATE," +
-                "transaction_time TIME)",
-
-            "CREATE TABLE IF NOT EXISTS transaction_type_table(" + 
-            "transaction_type_id INTEGER PRIMARY KEY," +
-            "transaction_type VARCHAR(255))"
+                "user_id INTEGER," +
+                "sender_acc_num TEXT," +
+                "recipient_acc_num TEXT," + # masked
+                "transaction_type TEXT, " +
+                "amount TEXT, " +
+                "date TEXT," +
+                "time TEXT," +
+                "FOREIGN KEY (user_id) REFERENCES users(user_id))"
         ]
 
         for table in DEFAULT_TABLES:
             self.sql.execute(table)
             self.conn.commit()
 
+class UserModel:
+    def __init__(self):
+        self.db = Database()
+        self.account_actions = UserAccountActions(self.db)
+        self.balance_actions = UserBalanceActions(self.db)
+        self.transaction_actions = UserTransactionActions(self.db)
+
+    def execute_query(self, query):
+        self.db.sql.execute(query)
+        return self.db.sql.fetchall()
+
+    def execute_update_query(self, query):
+        self.db.sql.execute(query)
+        self.db.conn.commit()
+
+    def execute_query_via_dict(self, query, dict):
+        self.db.sql.execute(query, dict)
+        self.db.conn.commit()
+
+class UserAccountActions:
+    def __init__(self, db):
+        self.db = db
 
     def hash_password(self, plaintext, salt):
         salted_pass = salt + plaintext
         hashed_pw = hashlib.sha256(salted_pass.encode())    
         return hashed_pw.hexdigest()
+    
+    def get_salt(self, user_id):
+        self.db.sql.execute("SELECT pass_salt FROM users WHERE user_id = ?", (user_id,))
+        return self.db.sql.fetchone()[0]
 
+    def get_hashed_password(self, user_id):
+        self.db.sql.execute("SELECT hashed_password FROM users WHERE user_id = ?", (user_id,))
+        return self.db.sql.fetchone()[0]
 
-class UserModel:
-    def __init__(self):
-        self.db = Database()
-
-
-    def isUsernameExists(self, username):
-        self.db.sql.execute("SELECT * FROM users WHERE username = ?", (username,))
-        results = self.db.sql.fetchall()
-        return len(results) > 0
-
-
-    def get_user_data(self, username):
-        self.db.sql.execute("SELECT * FROM users WHERE username = ?", (username,))
-        results = self.db.sql.fetchall()
+    def get_user_id_from_acc_num(self, account_number):
+        self.db.sql.execute("SELECT user_id FROM users WHERE account_number = ?", (account_number,))
+        return self.db.sql.fetchone()[0]
+    
+    def get_user_data_by_id(self, user_id):
+        self.db.sql.execute("SELECT * FROM users WHERE user_id = ?", (user_id,))
+        results = self.db.sql.fetchone()
 
         return results
+    
+    def generate_account_number(self, last_insert_id):
+        account_number = str(last_insert_id).zfill(12)
+        return account_number
+    
+    def verify_login(self, username, password):
+        username = username.strip()
+        self.db.sql.execute("SELECT * FROM users WHERE username = ?", (username,))
 
+        
+        results = self.db.sql.fetchall()
+
+        salt = ""
+        if len(results) > 0:
+            salt = results[0][6]
+        else:
+            return False
+        
+        password = self.hash_password(password, salt)
+
+        if password == results[0][5]:
+            return True
+        
+        return False
     
     def register(self, data={}):
         first_name = data['first_name']
@@ -95,50 +138,67 @@ class UserModel:
         self.db.sql.execute("INSERT INTO users_balance(user_id, account_number, balance) VALUES(?, ?, ?)", (last_insert_id, account_number, balance))
         self.db.conn.commit()
 
-
-    def verify_login(self, username, password):
-        username = username.strip()
+    def isUsernameExists(self, username):
         self.db.sql.execute("SELECT * FROM users WHERE username = ?", (username,))
+        results = self.db.sql.fetchall()
+        return len(results) > 0
 
-        
+    def get_user_data(self, username):
+        self.db.sql.execute("SELECT * FROM users WHERE username = ?", (username,))
         results = self.db.sql.fetchall()
 
-        salt = ""
-        if len(results) > 0:
-            salt = results[0][6]
-        else:
-            return False
-        
-        password = self.db.hash_password(password, salt)
-
-        if password == results[0][5]:
-            return True
-        
-        return False
+        return results
     
-    def generate_account_number(self, last_insert_id):
-        account_number = str(last_insert_id).zfill(12)
-        return account_number
+class UserBalanceActions:
+    def __init__(self, db):
+        self.db = db
 
-    def get_balance(self, user_id):
-        self.db.sql.execute("SELECT balance FROM users_balance WHERE user_id = ?", (user_id,))
-        result = self.db.sql.fetchone()
-        return result[0]
-
-    def get_balance_by_account_number(self, account_number):
-        self.db.sql.execute("SELECT balance FROM users_balance WHERE account_number = ?", (account_number,))
+    def get_balance(self, user_id=None, account_number=None):
+        result = []
+        if user_id is not None:
+            self.db.sql.execute("SELECT balance FROM users_balance WHERE user_id = ?", (user_id,))
+            
+        elif account_number is not None: 
+            self.db.sql.execute("SELECT balance FROM users_balance WHERE account_number = ?", (account_number,))
+        
         result = self.db.sql.fetchone()
         return result[0]
     
     def update_balance(self, balance, account_number):
         self.db.sql.execute("UPDATE users_balance SET balance = ? WHERE account_number = ?", (balance, account_number))
         self.db.conn.commit()
-
-
+    
     def check_existing_recipient(self, account_number, first_name, last_name):
         self.db.sql.execute("SELECT * FROM users where account_number = ? AND first_name = ? AND last_name = ?", (account_number,first_name, last_name))
         result = self.db.sql.fetchone()
         return len(result) > 0
 
+class UserTransactionActions:
+    def __init__(self, db):
+        self.db = db
 
+    def record_transaction(self, user_id, sender_acc_num, recipient_acc_num, transaction_type, amount):
+        self.db.sql.execute("SELECT DATE('NOW', 'localtime')")
+        date = self.db.sql.fetchone()[0]
+
+        self.db.sql.execute("SELECT TIME('NOW', 'localtime')")
+        time = self.db.sql.fetchone()[0]
+
+        self.db.sql.execute("INSERT INTO transaction_history (user_id, sender_acc_num, recipient_acc_num, transaction_type, amount, date, time) VALUES (?, ?, ?, ?, ?, ?, ?)", (user_id, sender_acc_num, recipient_acc_num, transaction_type, amount, date, time))
+        self.db.conn.commit()
+
+    def load_transactions(self, user_id, account_number):
+        self.db.sql.execute("SELECT sender_acc_num, recipient_acc_num, transaction_type, amount, date, time FROM transaction_history WHERE user_id = ? OR recipient_acc_num = ?", (user_id, account_number))    
+        return self.db.sql.fetchall()
     
+    def load_recent_transactions(self, user_id, account_number):
+        self.db.sql.execute("SELECT sender_acc_num, recipient_acc_num, transaction_type, amount, date, time FROM transaction_history WHERE user_id = ? OR recipient_acc_num = ? ORDER BY date DESC, time DESC LIMIT 5", (user_id, account_number))
+        return self.db.sql.fetchall()
+
+    def load_transactions_by_date(self, start_date, end_date):
+        self.db.sql.execute("SELECT sender_acc_num, recipient_acc_num, transaction_type, amount, date, time FROM transaction_history WHERE date BETWEEN ? AND ?", (start_date, end_date))
+        return self.db.sql.fetchall()
+    
+    def load_transactions_by_type(self, query, dict):
+        self.db.sql.execute(query, dict)
+        return self.db.sql.fetchall()
