@@ -7,6 +7,7 @@ from controllers.login_control import LoginAppControl
 from controllers.dashboard_control import DashboardAppControl
 from controllers.register_control import RegisterAppControl
 from controllers.dashboard_control import WithdrawControl
+from controllers.dashboard_control import *
 from models.user_session import UserSession
 from models.models import UserModel
 import sys, sqlite3, hashlib
@@ -46,5 +47,9 @@ if __name__ == "__main__":
 
     deposit_control = DepositControl(window, dashboard_control)
     withdraw_control = WithdrawControl(window, dashboard_control)
+    transfer_control = TransferControl(window, dashboard_control)
+    history_control = TransactionHistoryControl(window, dashboard_control)
+    account_control = AccountControl(window, dashboard_control)
+    
     window.show()
     app.exec()
