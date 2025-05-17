@@ -5,7 +5,6 @@ class UserSession:
         self.last_name = None
         self.username = None
         self.account_number = None
-        self.password = None
         self.balance = None # stored in cents, displayed in pesos
 
     def get_user_id(self):
@@ -51,3 +50,13 @@ class UserSession:
 
     def set_balance(self, balance):
         self.balance = balance
+
+    def set_personal_information(self, first_name=None, last_name=None, username=None):
+        if first_name is not None: 
+            self.first_name = first_name
+
+        if last_name is not None:
+            self.last_name = last_name
+
+        if username is not None:
+            self.username = username
