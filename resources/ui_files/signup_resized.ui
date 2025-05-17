@@ -17,7 +17,7 @@
    <string notr="true">background: #ffffff</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="1,2,1">
+   <layout class="QHBoxLayout" name="horizontalLayout_4" stretch="1,2,1">
     <item>
      <spacer name="horizontalSpacer">
       <property name="orientation">
@@ -91,7 +91,7 @@ border-radius: 8px;</string>
            <property name="title">
             <string/>
            </property>
-           <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,1,1,1,0,1,0,0,0,0">
+           <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,0,1,0,0,1,0,0,0,0,0,0,0">
             <item alignment="Qt::AlignHCenter|Qt::AlignVCenter">
              <widget class="QLabel" name="label">
               <property name="maximumSize">
@@ -124,26 +124,31 @@ border-radius: 8px;</string>
              </spacer>
             </item>
             <item>
-             <widget class="QLineEdit" name="first_name">
-              <property name="styleSheet">
-               <string notr="true">border: 1px solid #004aad;
-background: #daf0f7;</string>
-              </property>
-              <property name="placeholderText">
-               <string>First Name</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLineEdit" name="last_name">
-              <property name="styleSheet">
-               <string notr="true">border: 1px solid #004aad;
-background: #daf0f7;</string>
-              </property>
-              <property name="placeholderText">
-               <string>Last Name</string>
-              </property>
-             </widget>
+             <layout class="QHBoxLayout" name="horizontalLayout_2">
+              <item>
+               <widget class="QLineEdit" name="first_name">
+                <property name="styleSheet">
+                 <string notr="true">border: 1px solid #004aad;</string>
+                </property>
+                <property name="placeholderText">
+                 <string>First Name</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLineEdit" name="last_name">
+                <property name="styleSheet">
+                 <string notr="true">border: 1px solid #004aad;</string>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="placeholderText">
+                 <string>Last Name</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
             </item>
             <item>
              <widget class="QLineEdit" name="user_name">
@@ -153,6 +158,15 @@ background: #daf0f7;</string>
               </property>
               <property name="placeholderText">
                <string>Username</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="label_3">
+              <property name="text">
+               <string>Username should be:
+- 3-20 characters long
+- Letters, numbers, hyphens (-), underscores (_), periods (.) only </string>
               </property>
              </widget>
             </item>
@@ -196,6 +210,29 @@ background: #daf0f7;</string>
                <string>Confirm Password</string>
               </property>
              </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="label_4">
+              <property name="text">
+               <string>Password must:
+ - be at least 8 characters long
+- contain at least 1 lowercase and uppercase letter
+- contain at least 1 non-alphanumeric character  </string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="verticalSpacer_7">
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>20</width>
+                <height>40</height>
+               </size>
+              </property>
+             </spacer>
             </item>
             <item>
              <spacer name="verticalSpacer_4">
@@ -246,6 +283,28 @@ background: #69a9ff;
                </size>
               </property>
              </spacer>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_3" stretch="1,1">
+              <item>
+               <widget class="QLabel" name="label_5">
+                <property name="text">
+                 <string>Already have an account?</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="btn_login">
+                <property name="styleSheet">
+                 <string notr="true">border: 0;
+text-decoration: underline;</string>
+                </property>
+                <property name="text">
+                 <string>Login here</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
             </item>
            </layout>
           </widget>
