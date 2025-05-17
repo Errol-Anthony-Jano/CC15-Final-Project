@@ -88,7 +88,10 @@ class DepositControl:
         amount = amount_text.replace(".", '')
         recepient_amount = self.user.balance_actions.get_balance(recipient)
 
-    
+        if int(amount) ==  0:
+            QMessageBox.critical(self.main_window, "Invalid amount", "Please enter a valid amount.")
+            return
+
         new_amount = int(amount) + recepient_amount
         self.user.balance_actions.update_balance(new_amount, recipient)
         self.main_window.dashboard.depositPanel.clear_fields()
@@ -124,7 +127,7 @@ class WithdrawControl:
         
         existing_amount = self.user.balance_actions.get_balance(user_id)
 
-        if int(amount) > existing_amount:
+        if int(amount) > existing_amount or int(amount) == 0:
             QMessageBox.critical(self.main_window, "Invalid amount", "Please enter a valid amount.")
             return
         
@@ -157,7 +160,7 @@ class TransferControl:
         amount = amount_text.replace(".", "")
         sender_existing_balance = self.user.balance_actions.get_balance(user_id)
 
-        if int(amount) > sender_existing_balance:
+        if int(amount) > sender_existing_balance or int(amount) == 0:
             QMessageBox.critical(self.main_window, "Invalid amount", "Please enter a valid amount.")
             return
         
