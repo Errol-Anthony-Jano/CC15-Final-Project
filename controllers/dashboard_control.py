@@ -1,5 +1,6 @@
 from PyQt6.QtWidgets import QMessageBox
 from PyQt6.QtCore import QDate
+from models.utilities import Utilities
 import re 
 
 class DashboardAppControl:
@@ -76,32 +77,28 @@ class DepositControl:
 
         amount_text = self.main_window.dashboard.depositPanel.ui.amount_box.text()
 
-        if not re.fullmatch(r'^[0-9]+\.[0-9]{2}$', amount_text):
+        if Utilities.validate_amount(amount_text) == False:
             QMessageBox.warning(self.main_window, "Invalid amount format", "Please enter the amount using the format XXXX.XX, with no leading zeros on the amount.")
             return
         
-        amount = amount_text.replace(".", '')
-        recepient_amount = self.user.balance_actions.get_balance(recipient)
-
         if (self.user.balance_actions.check_existing_recipient(recipient, recipient_first_name, recipient_last_name) == False):
             QMessageBox.warning(self.main_window, "Transfer Failed", "Invalid account name/number.\nPlease make sure that you entered the correct details.")
             return
+
+        amount = amount_text.replace(".", '')
+        recepient_amount = self.user.balance_actions.get_balance(recipient)
+
     
         new_amount = int(amount) + recepient_amount
         self.user.balance_actions.update_balance(new_amount, recipient)
         self.main_window.dashboard.depositPanel.clear_fields()
 
-        self.user.transaction_actions.record_transaction(user_id, account_number, recipient, "Deposit", self.parse_amount(int(amount)))
+        self.user.transaction_actions.record_transaction(user_id, account_number, recipient, "Deposit", Utilities.parse_amount(int(amount)))
         QMessageBox.information(self.main_window, "Transaction Successful", "Transaction successful.")
         
         self.dashboard_control.showDashboard()
     
-    def parse_amount(self, amount):
-        if amount < 10:
-            return (f"0.0{amount}")
-        if amount >= 10 and amount < 100:
-            return (f"0.{amount}")
-        return str(amount)[:-2] + '.' + str(amount)[-2:]
+    
 
 class WithdrawControl:
     def __init__(self, window, dashboard_control):
@@ -119,27 +116,25 @@ class WithdrawControl:
 
         amount_text = self.withdraw_menu.ui.amount_box.text()
 
-        if not re.fullmatch(r'^[0-9]+\.[0-9]{2}$', amount_text):
+        if Utilities.validate_amount(amount_text) == False:
             QMessageBox.warning(self.main_window, "Invalid amount format", "Please enter the amount using the format XXXX.XX, with no leading zeros on the amount.")
             return
 
         amount = amount_text.replace(".", "")
-            
+        
+        existing_amount = self.user.balance_actions.get_balance(user_id)
+
+        if int(amount) > existing_amount:
+            QMessageBox.critical(self.main_window, "Invalid amount", "Please enter a valid amount.")
+            return
         
         new_amount = self.user.balance_actions.get_balance(user_id) - int(amount)
         
         self.user.balance_actions.update_balance(new_amount, account_number)
-        self.user.transaction_actions.record_transaction(user_id, account_number, "N/A", "Withdraw", self.parse_amount(int(amount)))
+        self.user.transaction_actions.record_transaction(user_id, account_number, "N/A", "Withdraw", Utilities.parse_amount(int(amount)))
         QMessageBox.information(self.main_window, "Transaction Successful", "Transaction successful.")
         self.main_window.dashboard.withdrawPanel.clear_fields()
         self.dashboard_control.showDashboard()
-
-    def parse_amount(self, amount):
-        if amount < 10:
-            return (f"0.0{amount}")
-        if amount >= 10 and amount < 100:
-            return (f"0.{amount}")
-        return str(amount)[:-2] + '.' + str(amount)[-2:]
 
 class TransferControl:
     def __init__(self, window, dashboard_control):
@@ -153,14 +148,19 @@ class TransferControl:
     def transfer(self):
         user_id = self.session.get_user_id()
         account_number = self.session.get_account_number()
-
         amount_text = self.transfer_menu.ui.amount_box.text()
 
-        if not re.fullmatch(r'^[0-9]+\.[0-9]{2}$', amount_text):
-            QMessageBox.warning(self.main_window, "Invalid amount format", "Please enter the amount using the format XXXX.XX, with no leading zeros on the amount.")
+        if Utilities.validate_amount(amount_text) == False:
+            QMessageBox.critical(self.main_window, "Invalid amount format", "Please enter the amount using the format XXXX.XX, with no leading zeros on the amount.")
             return
         
         amount = amount_text.replace(".", "")
+        sender_existing_balance = self.user.balance_actions.get_balance(user_id)
+
+        if int(amount) > sender_existing_balance:
+            QMessageBox.critical(self.main_window, "Invalid amount", "Please enter a valid amount.")
+            return
+        
         recipient_acc_num = self.transfer_menu.ui.account_box.text()
         recipient_first_name = self.transfer_menu.ui.first_name_box.text()
         recipient_last_name = self.transfer_menu.ui.last_name_box.text()
@@ -168,15 +168,19 @@ class TransferControl:
         if (self.user.balance_actions.check_existing_recipient(recipient_acc_num, recipient_first_name, recipient_last_name) == False):
             QMessageBox.warning(self.main_window, "Transfer Failed", "Invalid account name/number.\nPlease make sure that you entered the correct details.")
             return
+
+        if recipient_acc_num == self.session.get_account_number():
+            QMessageBox.warning(self.main_window, "Invalid account number", "Please enter an account number that is not yours.")
+            return
         
         recipient_amount = int(amount) + self.user.balance_actions.get_balance(recipient_acc_num)
-        sender_amount = self.user.balance_actions.get_balance(user_id) - int(amount)
+        sender_amount = sender_existing_balance - int(amount)
 
         self.user.balance_actions.update_balance(recipient_amount, recipient_acc_num)
         self.user.balance_actions.update_balance(sender_amount, self.session.get_account_number())
 
-        self.user.transaction_actions.record_transaction(user_id, account_number, recipient_acc_num, "Transfer - Sender", amount)
-        self.user.transaction_actions.record_transaction(user_id, account_number, recipient_acc_num, "Transfer - Receiver", amount)
+        self.user.transaction_actions.record_transaction(user_id, account_number, recipient_acc_num, "Transfer - Sender", Utilities.parse_amount(int(amount)))
+        self.user.transaction_actions.record_transaction(user_id, account_number, recipient_acc_num, "Transfer - Receiver", Utilities.parse_amount(int(amount)))
 
         QMessageBox.information(self.main_window, "Transaction Successful", "Transaction successful.")
         self.transfer_menu.clear_fields()
@@ -216,9 +220,10 @@ class TransactionHistoryControl:
                 QMessageBox.warning(self.main_window, "Operation Failed", "Please make sure that the date range is valid.")
                 return
 
-            query_string = f"SELECT sender_acc_num, recipient_acc_num, transaction_type, amount, date, time FROM transaction_history WHERE DATE BETWEEN '{start_date}' AND '{end_date}'"
-            print(query_string)
-            result_set = self.user.execute_query(query_string)
+            #query_string = f"SELECT sender_acc_num, recipient_acc_num, transaction_type, amount, date, time FROM transaction_history WHERE ((user_id = ? AND transaction_type = 'Withdraw') OR (user_id = ? AND transaction_type = 'Deposit') OR (recipient_acc_num = ? AND transaction_type = 'Transfer - Receiver') OR (sender_acc_num = ? AND transaction_type = 'Transfer - Sender')) AND DATE BETWEEN '{start_date}' AND '{end_date}'"
+            #print(query_string)
+            result_set = self.user.transaction_actions.load_transactions_by_date(self.session.get_user_id(), self.session.get_account_number(), start_date, end_date)
+            #result_set = self.user.execute_query(query_string)
             self.transaction_history.populate_table(result_set)
 
         elif self.transaction_history.ui.filter_select.currentText() == "Transaction Type and Date":
@@ -235,7 +240,7 @@ class TransactionHistoryControl:
 
             query_string, params = self.generate_filter_by_type([])
             #print(query_string)
-            main_query = f"SELECT sender_acc_num, recipient_acc_num, transaction_type, amount, date, time FROM transaction_history WHERE {query_string} AND (date BETWEEN '{start_date}' AND '{end_date}')"
+            main_query = f"SELECT sender_acc_num, recipient_acc_num, transaction_type, amount, date, time FROM transaction_history WHERE ({query_string}) AND (date BETWEEN '{start_date}' AND '{end_date}')"
             #print(main_query)
             result_set = self.user.transaction_actions.load_transactions_by_type(main_query, params)
             self.transaction_history.populate_table(result_set)
@@ -244,11 +249,11 @@ class TransactionHistoryControl:
         params = {}
 
         if self.transaction_history.ui.option_transfer_rec.isChecked():
-            query_list.append(f"(transaction_type = 'Transfer' AND recipient_acc_num = :recipient)")
+            query_list.append(f"(transaction_type = 'Transfer - Receiver' AND recipient_acc_num = :recipient)")
             params["recipient"] = self.session.get_account_number()
 
         if self.transaction_history.ui.option_transfer_send.isChecked():
-            query_list.append(f"(transaction_type = 'Transfer' AND sender_acc_num = :sender)")
+            query_list.append(f"(transaction_type = 'Transfer - Sender' AND sender_acc_num = :sender)")
             params["sender"] = self.session.get_account_number()
 
         if self.transaction_history.ui.option_deposit.isChecked():
@@ -315,34 +320,36 @@ class AccountControl:
         if self.check_unsaved_changes() == False:
             return
 
-        box_list = [
-            self.account_menu.ui.first_name_box,
-            self.account_menu.ui.last_name_box,
-            self.account_menu.ui.username_box,
-            self.account_menu.ui.password_box,
-            self.account_menu.ui.confirm_password_box,
-        ]
+        first_name = self.account_menu.ui.first_name_box.text().strip().title()
+        last_name = self.account_menu.ui.last_name_box.text().title()
+        username = self.account_menu.ui.username_box.text().strip()
+        password = self.account_menu.ui.password_box.text().strip()
+        confirm_password = self.account_menu.ui.confirm_password_box.text().strip()
+
+        if self.validate_inputs(first_name, last_name, username, password, confirm_password) == False:
+            return
+
 
         query_string = "UPDATE users SET "
         query_list = []
         params = {}
 
-        if box_list[0].text().title() != "" and box_list[0].text().title() != self.session.get_first_name():
+        if first_name != "" and first_name != self.session.get_first_name():
             #check via regex later
             query_list.append(f"first_name = :first_name")
-            params["first_name"] = box_list[0].text().title()
+            params["first_name"] = first_name
 
-        if box_list[1].text().title() != "" and box_list[0].text().title() != self.session.get_last_name():
+        if last_name != "" and last_name != self.session.get_last_name():
             query_list.append(f"last_name = :last_name")
-            params["last_name"] = box_list[1].text().title()
+            params["last_name"] = last_name
 
-        if box_list[2].text() != "" and box_list[2].text() != self.session.get_username():
+        if username != "" and username != self.session.get_username():
             query_list.append(f"username = :username")
-            params["username"] = box_list[2].text()
+            params["username"] = username
         
-        if box_list[3].text() != "" and box_list[3].text() == box_list[4].text():
+        if password != "" and password == confirm_password:
             query_list.append(f"hashed_password = :password")
-            params["password"] = self.user.account_actions.hash_password(box_list[3].text(), self.user.account_actions.get_salt(self.session.get_user_id()))
+            params["password"] = self.user.account_actions.hash_password(password, self.user.account_actions.get_salt(self.session.get_user_id()))
 
         i = 0
         for query in query_list:   
@@ -360,6 +367,7 @@ class AccountControl:
         QMessageBox.information(self.main_window, "Operation Successful", "Account details successfully updated.")
 
         self.account_menu.set_display_information(user_data[1], user_data[2], user_data[3], user_data[4])
+        self.session.set_personal_information(first_name=user_data[2], last_name=user_data[3], username=user_data[4])
         self.account_menu.clear_fields()
     
     def check_unsaved_changes(self):
@@ -384,4 +392,28 @@ class AccountControl:
             return True
 
         return False
-            
+    
+    def validate_inputs(self, first_name, last_name, username, password, confirm_password):
+        if first_name != "" and Utilities.validate_name(first_name) == False:
+            QMessageBox.critical(self.main_window, "Invalid input", "Invalid first name. Please make sure you entered your name correctly.\nOnly letters, a single apostrophe, and hyphens are allowed.")
+            return False
+        
+        if last_name != "" and Utilities.validate_name(last_name) == False:
+            QMessageBox.critical(self.main_window, "Invalid input", "Invalid last name. Please make sure you entered your name correctly.\nOnly letters, a single apostrophe, and hyphens are allowed.")
+            return False
+
+        if username != "" and Utilities.validate_username(username) == False:
+            QMessageBox.critical(self.main_window, "Invalid input", "Invalid username.\nPlease make sure that your username is 3-20 characters long, and must contain only letters, numbers, and apostrophes or periods.")
+            return False
+
+        if password != "" and Utilities.validate_password(password) == False:
+            QMessageBox.critical(self.main_window, "Invalid input", "Invalid password. Please make sure that your password is at least 8 characters long,\n and must contain at least 1 digit, 1 uppercase and lowercase letter,\n and at least 1 non-alphanumeric character.")
+            return False
+        elif Utilities.validate_password(password) == True and password != confirm_password:
+            QMessageBox.critical(self.main_window, "Invalid input", "Invalid password. Please make sure that your passwords match.")
+            return False
+
+        return True
+
+        
+
