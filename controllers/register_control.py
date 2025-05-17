@@ -5,6 +5,7 @@ class RegisterAppControl:
     def __init__(self, window):
         self.main_window = window
         self.main_window.registerPanel.btn_register.clicked.connect(self.register)
+        self.main_window.registerPanel.btn_login.clicked.connect(self.showLogin)
         self.user = UserModel()
 
 
@@ -20,8 +21,8 @@ class RegisterAppControl:
         confirm = self.main_window.registerPanel.confirm_password_field
 
         user_data = {
-            'first_name': first_name.text().title(),
-            'last_name': last_name.text().title(),
+            'first_name': first_name.text().title().strip(),
+            'last_name': last_name.text().title().strip(),
             'username': user_name.text().strip(),
             'password': password.text()
         }
