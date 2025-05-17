@@ -1,5 +1,7 @@
 from PyQt6.QtWidgets import QMessageBox
 from models.models import UserModel
+from models.utilities import Utilities
+import re
 
 class RegisterAppControl:
     def __init__(self, window):
@@ -20,11 +22,32 @@ class RegisterAppControl:
         password = self.main_window.registerPanel.password_field
         confirm = self.main_window.registerPanel.confirm_password_field
 
+        text_first_name = first_name.text().title().strip()
+        text_last_name = last_name.text().title().strip()
+        text_username = user_name.text().strip()
+        text_password = password.text()
+
+        if Utilities.validate_name(text_first_name) == False:
+            QMessageBox.critical(self.main_window, "Invalid input", "Invalid first name. Please make sure you entered your name correctly.\nOnly letters, a single apostrophe, and hyphens are allowed.")
+            return 
+        
+        if Utilities.validate_name(text_last_name) == False:
+            QMessageBox.critical(self.main_window, "Invalid input", "Invalid last name. Please make sure you entered your name correctly.\nOnly letters, a single apostrophe, and hyphens are allowed.")
+            return
+
+        if Utilities.validate_username(text_username) == False:
+            QMessageBox.critical(self.main_window, "Invalid input", "Invalid username.\nPlease make sure that your username is 3-20 characters long, and must contain only letters, numbers, and apostrophes or periods.")
+            return
+
+        if Utilities.validate_password(text_password) == False:
+            QMessageBox.critical(self.main_window, "Invalid input", "Invalid password. Please make sure that your password is at least 8 characters long,\n and must contain at least 1 digit, 1 uppercase and lowercase letter,\n and at least 1 non-alphanumeric character.")
+            return
+        
         user_data = {
-            'first_name': first_name.text().title().strip(),
-            'last_name': last_name.text().title().strip(),
-            'username': user_name.text().strip(),
-            'password': password.text()
+            'first_name': text_first_name,
+            'last_name': text_last_name,
+            'username': text_username,
+            'password': text_password
         }
 
         for key, value in user_data.items():
