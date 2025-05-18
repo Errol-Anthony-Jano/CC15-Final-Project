@@ -1,4 +1,5 @@
-import sqlite3, hashlib, secrets, random
+import sqlite3, hashlib, secrets
+from models.queries import Queries
 
 class Database:
     def __init__(self):
@@ -84,11 +85,18 @@ class UserAccountActions:
         self.db.sql.execute("SELECT user_id FROM users WHERE account_number = ?", (account_number,))
         return self.db.sql.fetchone()[0]
     
-    def get_user_data_by_id(self, user_id):
-        self.db.sql.execute("SELECT * FROM users WHERE user_id = ?", (user_id,))
-        results = self.db.sql.fetchone()
+    def get_user_data(self, user_id=None, account_number=None, username=None):
+        if user_id is not None:
+            self.db.sql.execute("SELECT * FROM users WHERE user_id = ?", (user_id,))
+            return self.db.sql.fetchone()
+        elif account_number is not None:
+            self.db.sql.execute("SELECT * FROM users WHERE account_number = ?", (account_number,))
+            return self.db.sql.fetchone()
+        elif username is not None:
+            self.db.sql.execute("SELECT * FROM users WHERE username = ?", (username,))
+            return self.db.sql.fetchone()
 
-        return results
+
     
     def generate_account_number(self, last_insert_id):
         account_number = str(last_insert_id).zfill(12)
@@ -123,7 +131,16 @@ class UserAccountActions:
         account_number = "000000000000"
         password_hash = self.hash_password(password, salt)
 
-        self.db.sql.execute("INSERT INTO users(account_number, first_name, last_name, username, hashed_password, pass_salt) VALUES(?,?,?,?,?,?)", (account_number, first_name, last_name, username, password_hash, salt))
+        self.db.sql.execute(Queries.insert_new_user_query(), (
+                account_number,
+                first_name,
+                last_name,
+                username,
+                password_hash,
+                salt
+            )
+        )
+
         self.db.conn.commit()
 
         self.db.sql.execute("SELECT LAST_INSERT_ROWID()")
@@ -135,7 +152,21 @@ class UserAccountActions:
 
         balance = 0
         
-        self.db.sql.execute("INSERT INTO users_balance(user_id, account_number, balance) VALUES(?, ?, ?)", (last_insert_id, account_number, balance))
+        self.db.sql.execute(
+            """
+            INSERT INTO users_balance (
+                user_id,
+                account_number,
+                balance
+            ) VALUES (?, ?, ?)
+            """,
+            (
+                last_insert_id,
+                account_number,
+                balance
+            )
+        )
+
         self.db.conn.commit()
 
     def isUsernameExists(self, username):
@@ -143,11 +174,7 @@ class UserAccountActions:
         results = self.db.sql.fetchall()
         return len(results) > 0
 
-    def get_user_data(self, username):
-        self.db.sql.execute("SELECT * FROM users WHERE username = ?", (username,))
-        results = self.db.sql.fetchall()
 
-        return results
     
 class UserBalanceActions:
     def __init__(self, db):
@@ -171,7 +198,14 @@ class UserBalanceActions:
         self.db.conn.commit()
     
     def check_existing_recipient(self, account_number, first_name, last_name):
-        self.db.sql.execute("SELECT * FROM users where account_number = ? AND first_name = ? AND last_name = ?", (account_number,first_name, last_name))
+        self.db.sql.execute(Queries.check_existing_recipient_query(),
+            (
+                account_number,
+                first_name,
+                last_name
+            )
+        )
+
         result = self.db.sql.fetchone()
         
         if result is None:
@@ -189,19 +223,52 @@ class UserTransactionActions:
         self.db.sql.execute("SELECT TIME('NOW', 'localtime')")
         time = self.db.sql.fetchone()[0]
 
-        self.db.sql.execute("INSERT INTO transaction_history (user_id, sender_acc_num, recipient_acc_num, transaction_type, amount, date, time) VALUES (?, ?, ?, ?, ?, ?, ?)", (user_id, sender_acc_num, recipient_acc_num, transaction_type, amount, date, time))
+        self.db.sql.execute(Queries.insert_new_transaction_query(),
+            (
+                user_id,
+                sender_acc_num,
+                recipient_acc_num,
+                transaction_type,
+                amount,
+                date,
+                time
+            )
+        )
+
         self.db.conn.commit()
 
-    def load_transactions(self, user_id, account_number):
-        self.db.sql.execute("SELECT sender_acc_num, recipient_acc_num, transaction_type, amount, date, time FROM transaction_history WHERE (user_id = ? AND transaction_type = 'Withdraw') OR (user_id = ? AND transaction_type = 'Deposit')  OR (recipient_acc_num = ? AND transaction_type = 'Transfer - Receiver') OR (sender_acc_num = ? AND transaction_type = 'Transfer - Sender')", (user_id, user_id, account_number, account_number))    
-        return self.db.sql.fetchall()
+    def load_transactions(self, user_id, account_number, recent_flag=False, date_flag=False, type_flag=False, start_date=None, end_date=None, type_list=None):
+        query_string = Queries.select_transactions_query()
+        #default behavior
+        if recent_flag == False and date_flag == False:
+            self.db.sql.execute(query_string,
+                (
+                    user_id,
+                    account_number,
+                    account_number
+                )
+            )
+        #used for loading recents
+        elif recent_flag == True:
+            self.db.sql.execute(query_string + Queries.order_and_limit_constraint(),
+                (
+                    user_id,
+                    account_number,
+                    account_number
+                )
+            )
+        # load transactions within certain date range
+        elif date_flag == True:
+            self.db.sql.execute(query_string + "AND DATE BETWEEN ? AND ?", 
+                (
+                    user_id,
+                    account_number,
+                    account_number,
+                    start_date,
+                    end_date
+                )
+            )
     
-    def load_recent_transactions(self, user_id, account_number):
-        self.db.sql.execute("SELECT sender_acc_num, recipient_acc_num, transaction_type, amount, date, time FROM transaction_history WHERE (user_id = ? AND transaction_type = 'Withdraw') OR (user_id = ? AND transaction_type = 'Deposit') OR (recipient_acc_num = ? AND transaction_type = 'Transfer - Receiver') OR (sender_acc_num = ? AND transaction_type = 'Transfer - Sender') ORDER BY date DESC, time DESC LIMIT 5", (user_id, user_id, account_number, account_number))
-        return self.db.sql.fetchall()
-
-    def load_transactions_by_date(self, user_id, account_number, start_date, end_date):
-        self.db.sql.execute("SELECT sender_acc_num, recipient_acc_num, transaction_type, amount, date, time FROM transaction_history WHERE ((user_id = ? AND transaction_type = 'Withdraw') OR (user_id = ? AND transaction_type = 'Deposit') OR (recipient_acc_num = ? AND transaction_type = 'Transfer - Receiver') OR (sender_acc_num = ? AND transaction_type = 'Transfer - Sender')) AND date BETWEEN ? AND ?", (user_id, user_id, account_number, account_number, start_date, end_date))
         return self.db.sql.fetchall()
     
     def load_transactions_by_type(self, query, dict):
