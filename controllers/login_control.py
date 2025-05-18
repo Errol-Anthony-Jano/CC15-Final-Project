@@ -34,25 +34,25 @@ class LoginAppControl:
 
         if(isVerified):
             
-            user_data = self.user.account_actions.get_user_data(username)
+            user_data = self.user.account_actions.get_user_data(username=username)
             
 
-            self.session.set_user_id(user_data[0][0])
-            self.session.set_account_number(user_data[0][1])
-            self.session.set_first_name(user_data[0][2])
-            self.session.set_last_name(user_data[0][3])
+            self.session.set_user_id(user_data[0])
+            self.session.set_account_number(user_data[1])
+            self.session.set_first_name(user_data[2])
+            self.session.set_last_name(user_data[3])
             self.session.set_username(username)
-            self.session.set_password(user_data[0][5]) # modify later
+            self.session.set_password(user_data[5]) # modify later
             
             balance = self.user.balance_actions.get_balance(self.session.get_user_id())
             self.session.set_balance(balance)
 
             self.main_window.dashboard.dashboard.set_balance_display(balance)
-            self.main_window.dashboard.accountPanel.set_display_information(user_data[0][1], user_data[0][2], user_data[0][3], username)
+            self.main_window.dashboard.accountPanel.set_display_information(user_data[1], user_data[2], user_data[3], username)
             self.main_window.dashboard.dashboard.set_acc_number_display(self.session.get_account_number())
             self.main_window.dashboard.dashboard.setup_table()
             
-            result_set = self.user.transaction_actions.load_recent_transactions(self.session.get_user_id(), self.session.get_account_number())
+            result_set = self.user.transaction_actions.load_transactions(self.session.get_user_id(), self.session.get_account_number(), recent_flag=True)
             self.main_window.dashboard.dashboard.populate_table(result_set)
             self.showDashboard()
             user_box.clear()
