@@ -27,7 +27,7 @@ class DashboardAppControl:
     # 5 - show account menu
 
     def showDashboard(self):
-        result_set = self.user.transaction_actions.load_recent_transactions(self.session.get_user_id(), self.session.get_account_number())
+        result_set = self.user.transaction_actions.load_transactions(self.session.get_user_id(), self.session.get_account_number(), recent_flag=True)
         self.main_window.dashboard.dashboard.populate_table(result_set)
         self.main_window.dashboard.dashboard.set_balance_display(self.user.balance_actions.get_balance(user_id=self.session.get_user_id()))
         self.main_window.dashboard.stack.setCurrentIndex(0)
@@ -204,10 +204,12 @@ class TransactionHistoryControl:
         if self.transaction_history.ui.filter_select.currentText() == "None":
             result_set = self.user.transaction_actions.load_transactions(self.session.get_user_id(), self.session.get_account_number())
             self.transaction_history.populate_table(result_set)
+
         elif self.transaction_history.ui.filter_select.currentText() == "Transaction Type":
             if self.are_checkboxes_checked() == False:
                 QMessageBox.warning(self.main_window, "Operation Failed", "Please check at least one of the boxes.")
                 return
+
             query_string, params = self.generate_filter_by_type([])
             main_query = f"SELECT sender_acc_num, recipient_acc_num, transaction_type, amount, date, time FROM transaction_history WHERE {query_string}"
             result_set = self.user.transaction_actions.load_transactions_by_type(main_query, params)
@@ -223,10 +225,8 @@ class TransactionHistoryControl:
                 QMessageBox.warning(self.main_window, "Operation Failed", "Please make sure that the date range is valid.")
                 return
 
-            #query_string = f"SELECT sender_acc_num, recipient_acc_num, transaction_type, amount, date, time FROM transaction_history WHERE ((user_id = ? AND transaction_type = 'Withdraw') OR (user_id = ? AND transaction_type = 'Deposit') OR (recipient_acc_num = ? AND transaction_type = 'Transfer - Receiver') OR (sender_acc_num = ? AND transaction_type = 'Transfer - Sender')) AND DATE BETWEEN '{start_date}' AND '{end_date}'"
-            #print(query_string)
-            result_set = self.user.transaction_actions.load_transactions_by_date(self.session.get_user_id(), self.session.get_account_number(), start_date, end_date)
-            #result_set = self.user.execute_query(query_string)
+            
+            result_set = self.user.transaction_actions.load_transactions(self.session.get_user_id(), self.session.get_account_number(), date_flag=True, start_date=start_date, end_date=end_date)
             self.transaction_history.populate_table(result_set)
 
         elif self.transaction_history.ui.filter_select.currentText() == "Transaction Type and Date":
@@ -234,6 +234,7 @@ class TransactionHistoryControl:
             if self.are_checkboxes_checked() == False:
                 QMessageBox.warning(self.main_window, "Operation Failed", "Please check at least one of the boxes.")
                 return
+            
             start_date = self.transaction_history.ui.date_from.date().toString("yyyy-MM-dd")
             end_date = self.transaction_history.ui.date_to.date().toString("yyyy-MM-dd")
 
@@ -365,7 +366,7 @@ class AccountControl:
         self.user.execute_query_via_dict(query_string, params)
         print(query_string)
         
-        user_data = self.user.account_actions.get_user_data_by_id(self.session.get_user_id())
+        user_data = self.user.account_actions.get_user_data(user_id=self.session.get_user_id())
 
         QMessageBox.information(self.main_window, "Operation Successful", "Account details successfully updated.")
 
@@ -417,6 +418,3 @@ class AccountControl:
             return False
 
         return True
-
-        
-
