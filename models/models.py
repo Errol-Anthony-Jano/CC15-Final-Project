@@ -131,6 +131,9 @@ class UserAccountActions:
         account_number = "000000000000"
         password_hash = self.hash_password(password, salt)
 
+        while (self.is_salt_unique(salt) == False):
+            salt = secrets.token_hex(16)
+        
         self.db.sql.execute(Queries.insert_new_user_query(), (
                 account_number,
                 first_name,
@@ -173,6 +176,12 @@ class UserAccountActions:
         self.db.sql.execute("SELECT * FROM users WHERE username = ?", (username,))
         results = self.db.sql.fetchall()
         return len(results) > 0
+
+    def is_salt_unique(self, salt):
+        self.db.sql.execute("SELECT pass_salt FROM users WHERE pass_salt = ?", (salt,))
+        result = self.db.sql.fetchone()
+
+        return result is None
 
 
     
