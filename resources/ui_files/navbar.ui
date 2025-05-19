@@ -121,7 +121,7 @@ border-left: 4px solid #004aad;
 }</string>
           </property>
           <property name="text">
-           <string>Account and Card</string>
+           <string>Account Information</string>
           </property>
           <property name="icon">
            <iconset>
