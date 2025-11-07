@@ -22,7 +22,7 @@ class DashboardUI(QWidget):
         self.stack.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Expanding)
 
         #Initialize NavBar 
-        self.navbar = uic.loadUi(r"resources\ui_files\navbar.ui")
+        self.navbar = uic.loadUi(r"resources/ui_files/navbar.ui")
         self.navbar.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Expanding)
 
         #Add elements to layout

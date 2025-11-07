@@ -27,8 +27,8 @@ class MainWindow(QMainWindow):
         # set central_widget as central widget
         self.setCentralWidget(self.central_widget)
 
-        self.loginPanel = uic.loadUi(r"resources\ui_files\login.ui")
-        self.registerPanel = uic.loadUi(r"resources\ui_files\signup_resized.ui")
+        self.loginPanel = uic.loadUi(r"resources/ui_files/login.ui")
+        self.registerPanel = uic.loadUi(r"resources/ui_files/signup_resized.ui")
         self.dashboard = DashboardUI()
 
         self.central_widget.addWidget(self.loginPanel) #index 0
